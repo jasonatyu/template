@@ -1,0 +1,42 @@
+var path = require('path');
+
+module.exports = {
+    context: __dirname,
+    entry: './frontend/index.jsx',
+    output: {
+        path: path.join(__dirname, 'app', 'assets', 'javascripts'),
+        filename: 'bundle.js'
+    },
+    module: {
+        rules: [
+            {
+                test: [/\.jsx?$/],
+                exclude: /(node_modules)/,
+                use: {
+                    loader: 'babel-loader',
+                    query: {
+                        presets: ['@babel/env', '@babel/react']
+                    }
+                },
+            },
+            {
+                test: /\.(png|jpg|gif)$/i,
+                use: [
+                    {
+                        loader: 'url-loader',
+                        options: {
+                            name: 'images/[hash]-[name].[ext]'
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    devtool: 'inline-source-map',
+    resolve: {
+        extensions: ['.js', '.jsx', '*'],
+        alias: {
+            'assets': path.resolve('./app/assets')
+        }
+    }
+};
